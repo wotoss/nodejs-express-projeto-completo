@@ -1,8 +1,10 @@
 //No backend iremos trabalhar em formato de classe
 
 //vamos chamar e importar o nosso express
-const express = require('express');
-const routes = require('./routes');
+//para poder usar o import instalei este framework sucrase
+import express from 'express';
+import mongoose from 'mongoose';
+import routes from './routes';
 
 //quando carregar os nosso App ele inicializa o construtor 
 //carregando assim os => middlewares, routes.
@@ -12,6 +14,11 @@ class App{
   constructor(){
 //criamos o nosso express no 
      this.server = express();
+//instalamos a biblioteca mongoose     
+     mongoose.connect('mongodb+srv://woto:woto@cluster0.ltpps.mongodb.net/projeto-node?retryWrites=true&w=majority', {
+       useNewUrlParser: true,
+       useUnifiedTopology: true,
+     });
      this.middlewares();
      this.routes();
   }
@@ -28,4 +35,4 @@ class App{
 
 //neste momento estarei exportando o server.
 //é o que faz sentido neste momento dentro do processo.
-module.exports = new App().server;
+export default new App().server;

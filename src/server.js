@@ -1,5 +1,6 @@
 //no server eu faço a configuração do servidor.
-const app = require('./app');
+//para poder usar o import instalei este framework sucrase
+import app from './app';
 
 //atraves do listem eu faço a configuração da porta do meu servidor 
 //neste caso será a porta 3333.

@@ -4,6 +4,7 @@
 //para poder usar o import instalei este framework sucrase
 import express from 'express';
 import mongoose from 'mongoose';
+import path from 'path';
 import routes from './routes';
 
 //quando carregar os nosso App ele inicializa o construtor 
@@ -24,6 +25,12 @@ class App{
   }
 
   middlewares(){
+  //fazendo rota e gerencimento do arquivo virtual
+    this.server.use(
+      '/files',
+      express.static(path.resolve(__dirname, '..', 'uploads'))
+    );
+
 //iremos usar os middlewares no formato Json.
      this.server.use(express.json());
   }

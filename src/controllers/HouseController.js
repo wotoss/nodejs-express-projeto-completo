@@ -1,8 +1,70 @@
 //agora vamos trazer o nosso model para dentro do controller através do import
 import House from '../models/House';
+import User from '../models/User';
 
 class HouseController{
   
+  //filtro para listar as casa que estão com o status => true ou false.
+  async index(req, res){
+    const { status } = req.query;
+
+    const houses = await House.find({ status });
+    return res.json(houses);
+  }
+  //vamos fazer o update
+  async update(req, res){
+    //lembrando que req ou requisição é tudo que estou enviando pelo meu formulário ao servidor
+    const { filename } = req.file;
+    const { house_id } = req.params; //consigo pegar o meu id
+    const { description, price, location, status } = req.body;
+    const { user_id } = req.headers; //o id do usuario esta vindo pelo headers.
+
+
+    //vamos fazer uma validação se o usuario que esta atualizando for diferente do que estiver logado
+    const user = await User.findById(user_id);
+    const houses = await House.findById(house_id);
+
+    if(String(user._id) !== String(houses.user)){
+     return res.status(401).json({ error: 'Não autorizado.'});
+    }
+    
+    //vai ser atualizada a casa ou house com base no (id ou house_id que estou enviando por parametro)
+    //comparado ao (id ou __id => que esta na base de dados ou que esta no meu json). 
+     await House.updateOne({ _id: house_id }, {
+      //agora neste objeto vamos enviar as informações que serão substituidas.
+      user: user_id,
+      thumbnail: filename,
+      description, 
+      price,
+      location,
+      status,
+    });
+    return res.send();
+  }
+
+  //vamos fazer o excluir 
+  async destroy(req, res){
+    const { house_id } = req.body; //consigo pegar o meu id
+    const { user_id } = req.headers; //o id do usuario esta vindo pelo headers.
+  
+
+  //vamos fazer uma validação se o usuario que esta atualizando for diferente do que estiver logado
+     const user = await User.findById(user_id);
+     const houses = await House.findById(house_id);
+ 
+     if(String(user._id) !== String(houses.user)){
+      return res.status(401).json({ error: 'Não autorizado.'});
+     }
+
+  //vou procurar o id e se achar eu já deleto.
+    await House.findByIdAndDelete({ _id: house_id });
+
+    return res.json({ message: "Excluida com sucesso!" });
+    
+  }
+
+
+  //store esta fazendo a criação da casa.
   async store(req, res){
   const { filename } = req.file;
   const { description, price, location, status } = req.body;

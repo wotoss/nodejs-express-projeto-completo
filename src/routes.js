@@ -10,7 +10,10 @@ import uploadConfig from './config/upload';
 //passar a rota do meu controller.
 import SessionController from './controllers/SessionController';
 
+import DashboardController from './controllers/DashboardController';
+
 import HouseController from './controllers/HouseController';
+
 
 
 //crio uma instância para poder utilizar.
@@ -24,10 +27,23 @@ const upload = multer(uploadConfig);
 //o objetivo desta rota é criar um novo usuario.
 routes.post('/sessions', SessionController.store);
 
+//rota de listagem de usuarios
+routes.get('/sessions', SessionController.show);
+
+routes.get('/dashboard', DashboardController.show);
+
 //veja! que estou enviando pela rota a imagem
 //como eu vou enviar uma imagem eu ponho single e o nome da imagem upload.single('thumbnail').
 //se fosse varias imagens eu colocaria um array  upload.array('thumbnail')
 routes.post('/houses', upload.single('thumbnail') ,HouseController.store);
+//usando o metodo get => pois vou listar algo com a (rota /houses)
+//acesso a minha controller HouseController e o metodo index.
+routes.get('/houses', HouseController.index);
+
+//estou passando em minha rota => house_id, a imagem, controller e o método.
+routes.put('/houses/:house_id', upload.single('thumbnail') ,HouseController.update);
+
+routes.delete('/houses', HouseController.destroy);
 
  
 

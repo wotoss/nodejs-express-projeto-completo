@@ -33,6 +33,24 @@ class SessionController{
      //caso já exista eu retorno este usuario aqui.
      return res.json(user);
   }
+
+
+  //vamos listar por os usuarios criados
+  async show(req, res){
+    let lista = await User.find(); 
+    return res.json(lista);
+  }
+
+  /*
+  *
+  async index(req, res){
+    const { status } = req.query;
+
+    const houses = await House.find({ status });
+    return res.json(houses);
+  }
+  */
+  
 }
 
 export default new SessionController();

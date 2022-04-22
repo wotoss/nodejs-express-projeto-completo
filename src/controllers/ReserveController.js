@@ -4,6 +4,17 @@ import User from '../models/User';
 import House from '../models/House';
 
 class ReserveController{
+
+  //vamos ter o controller da minhas reservas.
+  async index(req, res){
+    const { user_id } = req.headers;
+
+    //vai procurar a reserva, onde o usuario é igual ao usuario logado.
+    const reserves = await Reserve.find({ user: user_id }).populate('house');
+
+    return res.json(reserves);
+  }
+
   //vamos criar a reserva, com o store
   async store(req, res){
   //tudo isto que esta no const eu estou pegando da minha requisição
@@ -44,6 +55,19 @@ class ReserveController{
   
     return res.json(reserve);
   }
+
+  //vamos fazer exclusão de reservas.
+  async destroy(req, res){
+
+    const { reserve_id } = req.body;
+
+    await Reserve.findByIdAndDelete({ _id: reserve_id });
+    
+    //return res.send();
+    //return res.json({ message: 'Deletado com sucesso!' });
+    return res.status(200).json({ message: 'Status 200 deletado com sucesso!!'})
+  }
+
 }
 
 export default new ReserveController();

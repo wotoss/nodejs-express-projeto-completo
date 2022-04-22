@@ -40,16 +40,6 @@ class SessionController{
     let lista = await User.find(); 
     return res.json(lista);
   }
-
-  /*
-  *
-  async index(req, res){
-    const { status } = req.query;
-
-    const houses = await House.find({ status });
-    return res.json(houses);
-  }
-  */
   
 }
 

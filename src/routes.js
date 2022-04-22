@@ -47,6 +47,11 @@ routes.delete('/houses', HouseController.destroy);
 //rota encadeada => esta tentando fazer a reserva na casa
 ///house/id-da-casa/reserva.
 routes.post('/houses/:house_id/reserve', ReserveController.store);
+//estou usando o método get, pois vou entregar uma lista.
+routes.get('/reserves', ReserveController.index);
+
+//rota para excluir
+routes.delete('/reserves/cancel', ReserveController.destroy);
 
  
 

@@ -27,9 +27,8 @@ const HouseSchema = new Schema({
 //Vou criar um campo virtual, quando criarmos uma nova casa ele não vai ser registrado no nosso banco
 //mas quando fizermos uma busca ele vai estar lá....Mas não estará registrado na base de dados.
 HouseSchema.virtual('thumbnail_url').get(function(){
-  var woto = `http://localhost:3333/files/${this.thumbnail}`;
-  console.log(`Ver a minha imagem => ${woto}`);
-  return woto;
+  return  `http://localhost:3333/files/${this.thumbnail}`;
+  
 })
 
 

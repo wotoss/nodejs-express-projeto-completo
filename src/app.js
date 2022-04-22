@@ -4,6 +4,7 @@
 //para poder usar o import instalei este framework sucrase
 import express from 'express';
 import mongoose from 'mongoose';
+import cors from 'cors';
 import path from 'path';
 import routes from './routes';
 
@@ -25,6 +26,9 @@ class App{
   }
 
   middlewares(){
+  //eu passando o cors desta forma isto significa que estou liberando acesso a todos 
+  //qualquer dominio, qualque url. 
+   this.server.use(cors()); 
   //fazendo rota e gerencimento do arquivo virtual
     this.server.use(
       '/files',

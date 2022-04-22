@@ -9,10 +9,9 @@ import uploadConfig from './config/upload';
 
 //passar a rota do meu controller.
 import SessionController from './controllers/SessionController';
-
 import DashboardController from './controllers/DashboardController';
-
 import HouseController from './controllers/HouseController';
+import ReserveController from './controllers/ReserveController';
 
 
 
@@ -44,6 +43,10 @@ routes.get('/houses', HouseController.index);
 routes.put('/houses/:house_id', upload.single('thumbnail') ,HouseController.update);
 
 routes.delete('/houses', HouseController.destroy);
+
+//rota encadeada => esta tentando fazer a reserva na casa
+///house/id-da-casa/reserva.
+routes.post('/houses/:house_id/reserve', ReserveController.store);
 
  
 

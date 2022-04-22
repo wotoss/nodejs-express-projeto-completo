@@ -1,6 +1,7 @@
 //agora vamos trazer o nosso model para dentro do controller através do import
 import House from '../models/House';
 import User from '../models/User';
+import * as Yup from 'Yup';
 
 class HouseController{
   
@@ -13,11 +14,28 @@ class HouseController{
   }
   //vamos fazer o update
   async update(req, res){
+     
+   //fazendo validação atraves da biblioteca instalada Yup
+  const schema = Yup.object().shape({
+    description: Yup.string().required(),
+    price: Yup.number().required(),
+    location: Yup.string().required(),
+    status: Yup.boolean().required(),
+ });
+
+
     //lembrando que req ou requisição é tudo que estou enviando pelo meu formulário ao servidor
     const { filename } = req.file;
     const { house_id } = req.params; //consigo pegar o meu id
     const { description, price, location, status } = req.body;
     const { user_id } = req.headers; //o id do usuario esta vindo pelo headers.
+
+    //vamos para validação completa
+  if(!(await schema.isValid(req.body))){
+    //status code 400 => front-end nos enviou algum campo errado.  
+      return res.status(400).json({ error: 'Falha na validação.'})
+    }
+  
 
 
     //vamos fazer uma validação se o usuario que esta atualizando for diferente do que estiver logado
@@ -66,9 +84,24 @@ class HouseController{
 
   //store esta fazendo a criação da casa.
   async store(req, res){
+
+  //fazendo validação atraves da biblioteca instalada Yup
+  const schema = Yup.object().shape({
+     description: Yup.string().required(),
+     price: Yup.number().required(),
+     location: Yup.string().required(),
+     status: Yup.boolean().required(),
+  });
+
   const { filename } = req.file;
   const { description, price, location, status } = req.body;
   const { user_id } = req.headers;
+
+  //antes de criar vamos para validação completa
+  if(!(await schema.isValid(req.body))){
+  //status code 400 => front-end nos enviou algum campo errado.  
+    return res.status(400).json({ error: 'Falha na validação.'})
+  }
 
   //crio a variavel const house.
   //await => pois vou ter acesso a base de dados, será um processo assincrono

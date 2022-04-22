@@ -10,6 +10,7 @@
 
 //agora vamos trazer o nosso model para dentro do controller através do import
 import User from '../models/User';
+import * as Yup from 'Yup';
 
 class SessionController{
   //vamos fazer um login, então teremos um método store
@@ -18,7 +19,19 @@ class SessionController{
   //3- ao pegar este email nos criamos na base dedas =>  User.create({ email })
   //4- e ai retornamos para o usuarios atraves res o email.Lembrando em formato Json
  async store(req, res){
+
+   //fazendo validação atraves da biblioteca instalada Yup
+  const schema = Yup.object().shape({
+    email: Yup.string().email().required(),
+ });
+
      const { email } = req.body;
+
+    //vamos para validação completa
+    if(!(await schema.isValid(req.body))){
+    //status code 400 => front-end nos enviou algum campo errado.  
+      return res.status(400).json({ error: 'Falha na validação.'});
+    }
      
      //validação ou verificação para ver se o usuario já existe. 
      //caso ele exista não registraremos na base de dados mongoDb.
